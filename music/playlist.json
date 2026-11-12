@@ -1,0 +1,8 @@
+[
+  {
+    "id": "builtin-default-wav",
+    "title": "深海静谧 432Hz 疗愈音 (内置本地音频)",
+    "url": "./music/default-calm.wav",
+    "isDefault": true
+  }
+]

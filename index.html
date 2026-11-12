@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <script>
+  {
+    const savedScheme = localStorage.getItem("color-scheme");
+    const meta = document.querySelector('meta[name="color-scheme"]');
+    if (savedScheme) {
+      meta.content = savedScheme;
+      document.documentElement.classList.toggle("theme-light", savedScheme === "light");
+      document.documentElement.classList.toggle("theme-dark", savedScheme === "dark");
+    }
+  }
+  </script>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Calm">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+  <title>Calm</title>
+</head>
+<body>
+  <!-- Ambient Liquid Mesh Background Layers -->
+  <div class="ambient-glow ambient-glow-1" aria-hidden="true"></div>
+  <div class="ambient-glow ambient-glow-2" aria-hidden="true"></div>
+  <div class="ambient-glow ambient-glow-3" aria-hidden="true"></div>
+
+  <div class="app-shell">
+    <!-- Liquid Glass Top Bar -->
+    <header class="top-bar">
+      <div class="brand-title">Calm</div>
+      <div class="top-actions">
+        <button type="button" id="audio-toggle-btn" class="liquid-icon-btn" data-playing="true" aria-label="Audio Toggle">
+          <span id="audio-icon" aria-hidden="true">🔊</span>
+        </button>
+        <button type="button" id="open-music-btn" class="liquid-icon-btn" aria-label="Music">
+          <span aria-hidden="true">🎵</span>
+        </button>
+        <button type="button" id="open-archive-btn" class="liquid-icon-btn" aria-label="History">
+          <span id="header-win-count">0</span>
+        </button>
+        <button type="button" id="theme-toggle-btn" class="liquid-icon-btn" aria-label="Theme">
+          <span id="theme-icon" aria-hidden="true">🌙</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Stage -->
+    <main class="step-stage">
+      <!-- STEP 1: Liquid Glass Breathing Orb -->
+      <section id="step-panel-1" class="step-panel step-panel-center" aria-label="Breathe">
+        <div class="breathing-arena">
+          <div id="orb-container" class="orb-container" style="--orb-scale: 0.65; --orb-duration: 2s;">
+            <!-- Outer Liquid Ripple Membranes -->
+            <div class="liquid-membrane liquid-membrane-outer" aria-hidden="true"></div>
+            <div class="liquid-membrane liquid-membrane-mid" aria-hidden="true"></div>
+            
+            <!-- Liquid Glass Interactive Orb with Specular Sheen -->
+            <div class="liquid-glass-orb" role="timer" aria-live="off">
+              <div class="specular-highlight" aria-hidden="true"></div>
+              <div class="orb-content">
+                <span id="orb-phase-text" class="orb-phase-text">Inhale</span>
+                <span id="orb-timer-text" class="orb-timer-text">2.0</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="breath-controls-bar">
+            <div class="liquid-pills" role="radiogroup" aria-label="Breathing Mode">
+              <label class="liquid-pill-label">
+                <input type="radio" name="breath-mode" value="sigh" checked>
+                <span>Sigh</span>
+              </label>
+              <label class="liquid-pill-label">
+                <input type="radio" name="breath-mode" value="478">
+                <span>4-7-8</span>
+              </label>
+              <label class="liquid-pill-label">
+                <input type="radio" name="breath-mode" value="box">
+                <span>Box</span>
+              </label>
+            </div>
+            <button type="button" id="toggle-chime-btn" class="liquid-icon-btn" aria-label="Chime">
+              <span id="chime-status-text" aria-hidden="true">🔔</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 2: Liquid Card Sober Memo & Photo -->
+      <section id="step-panel-2" class="step-panel" aria-label="Reminder" hidden>
+        <div class="photo-anchor-section">
+          <div id="photo-grid" class="photo-grid"></div>
+          <label class="floating-photo-btn" title="Add Photo">
+            <span aria-hidden="true">📷 +</span>
+            <input type="file" id="photo-upload-input" accept="image/*" multiple hidden>
+          </label>
+        </div>
+
+        <div class="liquid-glass-card quote-hero-card" id="quote-card-tap">
+          <blockquote id="quote-main-text" class="quote-main-text">
+            "Pause for 3 minutes now to save 3 days of regret."
+          </blockquote>
+          <div class="quote-controls">
+            <button type="button" id="next-quote-btn" class="liquid-glass-pill">↻ Next</button>
+            <button type="button" id="pin-quote-btn" class="liquid-glass-pill">📌 Pin</button>
+          </div>
+        </div>
+
+        <div class="custom-memo-box">
+          <input type="text" id="custom-memo-input" class="liquid-input" placeholder="Add a personal reminder…" aria-label="Reminder">
+          <button type="button" id="add-memo-btn" class="liquid-glass-pill">Save</button>
+        </div>
+      </section>
+
+      <!-- STEP 3: 5-4-3-2-1 Grounding (Inverted Pyramid) -->
+      <section id="step-panel-3" class="step-panel step-panel-center" aria-label="Ground" hidden>
+        <div id="sense-group-list" class="pyramid-grounding-list"></div>
+      </section>
+
+      <!-- STEP 4: Shredder / Release -->
+      <section id="step-panel-4" class="step-panel" aria-label="Release" hidden>
+        <div class="shredder-stage">
+          <div id="vent-paper-wrap" class="vent-paper-wrap liquid-glass-card">
+            <textarea id="vent-textarea" class="liquid-textarea" placeholder="Release what's bothering you…" aria-label="Vent text"></textarea>
+            <div id="shred-strips-container" class="shred-strips-container" hidden></div>
+            <canvas id="destroy-fx-canvas" class="destroy-fx-canvas" width="400" height="260" hidden></canvas>
+          </div>
+
+          <div class="liquid-pills" role="radiogroup" aria-label="Destruction Style">
+            <label class="liquid-pill-label">
+              <input type="radio" name="destroy-mode" value="shred" checked>
+              <span>✂️ Shred</span>
+            </label>
+            <label class="liquid-pill-label">
+              <input type="radio" name="destroy-mode" value="fire">
+              <span>🔥 Burn</span>
+            </label>
+            <label class="liquid-pill-label">
+              <input type="radio" name="destroy-mode" value="stardust">
+              <span>✨ Stardust</span>
+            </label>
+          </div>
+
+          <button type="button" id="destroy-trigger-btn" class="liquid-btn-danger">
+            Release
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Minimal Liquid Bottom Dock (No Arrows) -->
+    <footer class="bottom-dock">
+      <button type="button" id="calm-now-btn" class="liquid-btn-primary">
+        I'm Calm ✨
+      </button>
+      <button type="button" id="next-step-btn" class="liquid-btn-glass">
+        Next
+      </button>
+    </footer>
+  </div>
+
+  <audio id="healing-audio" preload="auto" loop></audio>
+
+  <!-- DIALOG 1: Local Music -->
+  <dialog id="music-dialog" closedby="any" aria-labelledby="music-dialog-title" class="liquid-dialog">
+    <div class="dialog-header">
+      <h2 id="music-dialog-title" class="dialog-title">🎵 Music</h2>
+      <form method="dialog">
+        <button type="submit" class="dialog-close-btn">✕</button>
+      </form>
+    </div>
+    <div class="dialog-stack">
+      <label class="liquid-upload-dropzone">
+        <span>+ Import audio (.mp3 / .m4a / .wav)</span>
+        <input type="file" id="local-music-input" accept="audio/*,.mp3,.m4a,.wav,.flac,.ogg,.aac" multiple>
+      </label>
+      <ul id="music-track-list" class="track-list"></ul>
+    </div>
+  </dialog>
+
+  <!-- DIALOG 2: Cooldown Check-in -->
+  <dialog id="victory-dialog" closedby="any" aria-labelledby="victory-dialog-title" class="liquid-dialog">
+    <div class="dialog-header">
+      <h2 id="victory-dialog-title" class="dialog-title">✨ Restored</h2>
+      <form method="dialog">
+        <button type="submit" class="dialog-close-btn">✕</button>
+      </form>
+    </div>
+    <div class="dialog-stack">
+      <div id="trigger-tag-group" class="tag-grid" role="radiogroup" aria-label="Trigger">
+        <label class="liquid-pill-label">
+          <input type="radio" name="trigger-tag" value="💼 Work" checked>
+          <span>💼 Work</span>
+        </label>
+        <label class="liquid-pill-label">
+          <input type="radio" name="trigger-tag" value="🏠 Family">
+          <span>🏠 Family</span>
+        </label>
+        <label class="liquid-pill-label">
+          <input type="radio" name="trigger-tag" value="😴 Fatigue">
+          <span>😴 Fatigue</span>
+        </label>
+        <label class="liquid-pill-label">
+          <input type="radio" name="trigger-tag" value="🚗 Hassle">
+          <span>🚗 Hassle</span>
+        </label>
+        <label class="liquid-pill-label">
+          <input type="radio" name="trigger-tag" value="💭 Overthinking">
+          <span>💭 Overthinking</span>
+        </label>
+      </div>
+
+      <button type="button" id="save-victory-btn" class="liquid-btn-primary">
+        Done
+      </button>
+    </div>
+  </dialog>
+
+  <!-- DIALOG 3: Minimal Records -->
+  <dialog id="archive-dialog" closedby="any" aria-labelledby="archive-dialog-title" class="liquid-dialog">
+    <div class="dialog-header">
+      <h2 id="archive-dialog-title" class="dialog-title">📊 Records (<span id="stat-total-count">0</span>)</h2>
+      <form method="dialog">
+        <button type="submit" class="dialog-close-btn">✕</button>
+      </form>
+    </div>
+    <div class="dialog-stack">
+      <ul id="history-list" class="history-list"></ul>
+      <button type="button" id="clear-history-btn" class="liquid-glass-pill">Clear</button>
+    </div>
+  </dialog>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
